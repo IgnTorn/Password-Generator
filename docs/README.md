@@ -1,6 +1,6 @@
 ##  Table of contents
 
-- [Introduction](#-introduction)
+- [Overview](#-overview)
 - [Features](#-features)
 - [Usage](#-usage)
 - [Built with](#️-built-with)
@@ -45,3 +45,4 @@ No additional installations are required beyond .NET. (Simpler usage available s
 ## ✒️ Author
 
 * **Tornike Ebralidze** - *Developer and documentation* - [IgnTorn](https://github.com/IgnTorn)
+
