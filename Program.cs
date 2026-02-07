@@ -1,123 +1,149 @@
-﻿bool notGenerated = true;
+﻿using System.Security.Cryptography;
+using System.Text;
+
+bool notGenerated = true;
 string upperChoice = string.Empty, lowerChoice = string.Empty, numberChoice = string.Empty;
-string specialChoice = string.Empty, excludeChoice = string.Empty;
-int passLengthInt = 0, passAmountInt = 0; ;
+string specialChoice = string.Empty, excludeChoice = string.Empty, generateAgain = string.Empty;
+int passLengthInt = 0, passAmountInt = 0;
 
 
 while (notGenerated)
 {
-    UserPreferance();
+    bool valid = UserPreference();
+    if (!valid)
+        continue;
+
     GeneratePassword();
 }
 
-void UserPreferance()
+bool UserPreference()
 {
-    // Get User Preferences
     Console.Write("----------------\nPassword length: ");
-    string passLength = Console.ReadLine();
-    if (!int.TryParse(passLength, out int passLengthInt))
+    string passLength = Console.ReadLine().Trim();
+    if (!int.TryParse(passLength, out passLengthInt))
     {
         Console.WriteLine("Please enter a valid number.");
-        return;
+        return false;
     }
 
     if (passLengthInt < 8 || passLengthInt > 20)
     {
         Console.WriteLine("Password length must be between 8 and 20");
-        return;
+        return false;
     }
 
     Console.Write("-------------------------------------\nHow many passwords should be created: ");
-    string passAmount = Console.ReadLine();
-    if (!int.TryParse(passAmount, out int passAmountInt))
+    string passAmount = Console.ReadLine().Trim();
+    if (!int.TryParse(passAmount, out passAmountInt))
     {
         Console.WriteLine("Please enter a valid number.");
-        return;
+        return false;
     }
     if (passAmountInt < 1)
     {
         Console.WriteLine("Please enter a valid number greater than 0.");
-        return;
+        return false;
     }
 
-    // Get Character Types
     Console.Write("--------------------------\nInclude uppercase letters? (y/n): ");
-    string upperChoice = Console.ReadLine();
-    if (upperChoice.ToLower() != "y" && upperChoice.ToLower() != "n")
+    upperChoice = Console.ReadLine().Trim().ToLower();
+    if (upperChoice != "y" && upperChoice != "n")
     {
         Console.WriteLine("Please enter a valid answer.");
-        return;
+        return false;
     }
 
     Console.Write("--------------------------\nInclude lowercase letters? (y/n): ");
-    string lowerChoice = Console.ReadLine();
-    if (lowerChoice.ToLower() != "y" && lowerChoice.ToLower() != "n")
+    lowerChoice = Console.ReadLine().Trim().ToLower();
+    if (lowerChoice != "y" && lowerChoice != "n")
     {
         Console.WriteLine("Please enter a valid answer.");
-        return;
+        return false;
     }
 
     Console.Write("----------------\nInclude numbers? (y/n): ");
-    string numberChoice = Console.ReadLine();
-    if (numberChoice.ToLower() != "y" && numberChoice.ToLower() != "n")
+    numberChoice = Console.ReadLine().Trim().ToLower();
+    if (numberChoice != "y" && numberChoice != "n")
     {
         Console.WriteLine("Please enter a valid answer.");
-        return;
+        return false;
     }
 
     Console.Write("---------------------------\nInclude special characters? (y/n): ");
-    string specialChoice = Console.ReadLine();
-    if (specialChoice.ToLower() != "y" && specialChoice.ToLower() != "n")
+    specialChoice = Console.ReadLine().Trim().ToLower();
+    if (specialChoice != "y" && specialChoice != "n")
     {
         Console.WriteLine("Please enter a valid answer.");
-        return;
+        return false;
     }
 
     Console.Write("-----------------------------\nExclude confusing characters? (y/n): ");
-    string excludeChoice = Console.ReadLine();
-    if (excludeChoice.ToLower() != "y" && excludeChoice.ToLower() != "n")
+    excludeChoice = Console.ReadLine().Trim().ToLower();
+    if (excludeChoice != "y" && excludeChoice != "n")
     {
         Console.WriteLine("Please enter a valid answer.");
-        return;
+        return false;
     }
 
-    if (upperChoice.ToLower() == "n" && lowerChoice.ToLower() == "n" && numberChoice.ToLower() == "n" && specialChoice.ToLower() == "n")
+    if (upperChoice == "n" && lowerChoice == "n" && numberChoice == "n" && specialChoice == "n")
     {
         Console.WriteLine("Please select at least one character type.");
-        return;
+        return false;
     }
 
-    notGenerated = false;
+    return true;
 }
 
 void GeneratePassword()
 {
     List<char> charPool = new List<char>();
 
-    if (upperChoice.ToLower() == "y")
-    {
+    if (upperChoice == "y")
         charPool.AddRange("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    }
 
-    if (lowerChoice.ToLower() == "y")
-    {
+    if (lowerChoice == "y")
         charPool.AddRange("abcdefghijklmnopqrstuvwxyz");
-    }
 
-    if (numberChoice.ToLower() == "y")
-    {
+    if (numberChoice == "y")
         charPool.AddRange("0123456789");
-    }
 
-    if (specialChoice.ToLower() == "y")
-    {
+    if (specialChoice == "y")
         charPool.AddRange("!@#$%^&*()-_=+[]{}|;:,.<>?/");
+
+    if (excludeChoice == "y")
+        charPool.RemoveAll(c => "O0Il".Contains(c));
+
+    if (charPool.Count == 0)
+    {
+        Console.WriteLine("No characters available to generate password.");
+        return;
     }
 
-    if (excludeChoice.ToLower() == "y")
+    Console.WriteLine("-----------------------------");
+
+    for (int i = 0; i < passAmountInt; i++)
     {
-        charPool.RemoveAll(c => "O0Il".Contains(c));
+         StringBuilder password = new StringBuilder();
+
+        for (int j = 0; j < passLengthInt; j++)
+        {
+            int index = RandomNumberGenerator.GetInt32(charPool.Count);
+            password.Append(charPool[index]);
+        }
+        Console.WriteLine($"\nGenerated password {i + 1}: {password}");
     }
+    Console.WriteLine("\n-----------------------------");
+
+    do
+    {
+        Console.Write("\nGenerate again? (y/n): ");
+        generateAgain = Console.ReadLine().Trim().ToLower();
+
+        if (generateAgain != "y" && generateAgain != "n")
+            Console.WriteLine("\n-----------------------------\nPlease enter a valid answer.\n-----------------------------");
+
+    } while (generateAgain != "y" && generateAgain != "n");
+
+    if (generateAgain == "n")
+        notGenerated = false;
 }
-    // Generate
-// Made By IgnTorn
