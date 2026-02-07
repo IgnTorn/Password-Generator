@@ -111,7 +111,11 @@ void GeneratePassword()
         charPool.AddRange("!@#$%^&*()-_=+[]{}|;:,.<>?/");
 
     if (excludeChoice == "y")
-        charPool.RemoveAll(c => "O0Il".Contains(c));
+    {
+        string confusingChars = "Il1O0";
+        charPool.RemoveAll(c => confusingChars.Contains(c));
+    }
+        
 
     if (charPool.Count == 0)
     {
