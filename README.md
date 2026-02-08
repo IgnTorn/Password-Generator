@@ -24,18 +24,18 @@ The system design focuses on providing security by avoiding weaker and repetitiv
 
 ## 📋 Usage
 
-1. - Clone or download the repository.
-2. - Open the project in Visual Studio or any other C# integrated development environment.
-3. - Build and run the project.
-4. - Follow the console's prompts and enter:
-- The desired password length
-- The number of passwords to create
-- The characters that can be used
-- Whether characters that can cause confusion are excluded
-- The created passwords, as they are displayed in the console
-5. - Choose what to do next: continue creating more passwords or exit.
-  
-No additional installations are required beyond .NET. (Simpler usage available soon?)
+1. - **Download and extract** one of the ZIP files (choose either the GUI version or the console version) into a folder on your computer.
+2. - **Open the folder** and launch the .exe file inside.
+3. - **Requirements:** Make sure you have .NET 9 installed on your system.
+4. - **Follow the prompts** in the application:
+- Enter the desired password length.
+- Specify the number of passwords to generate.
+- Select the characters that can be used.
+- Choose whether to exclude confusing characters.
+5. - The program will display the **generated passwords**.
+6. - Choose whether to **create more passwords** or **exit**.
+
+No additional installations are required beyond .NET 9.
 
 ## 🛠️ Built with
 
